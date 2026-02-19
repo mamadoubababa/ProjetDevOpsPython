@@ -1,0 +1,30 @@
+name: Python CI - Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Installer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Installer pytest
+        run: pip install pytest
+
+      - name: Créer un test simple
+        run: |
+          echo "def test_addition():" > test_app.py
+          echo "    from app import addition" >> test_app.py
+          echo "    assert addition(5, 3) == 8" >> test_app.py
+
+      - name: Lancer les tests
+        run: pytest

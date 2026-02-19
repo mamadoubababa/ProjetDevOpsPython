@@ -1,4 +1,4 @@
-name: Python CI - Simple
+name: Python CI - Test
 
 on:
   push:
@@ -6,17 +6,28 @@ on:
       - main
 
 jobs:
-  run-python:
+  test-and-run:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup Python
+      - name: Installer Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Run Python script
+      - name: Installer pytest
+        run: pip install pytest
+
+      - name: Créer test simple
+        run: |
+          echo "def test_addition():" > test_app.py
+          echo "    from app import addition" >> test_app.py
+          echo "    assert addition(5, 3) == 8" >> test_app.py
+
+      - name: Lancer tests
+        run: pytest
+
+      - name: Exécuter app.py
         run: python app.py
